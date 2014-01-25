@@ -20,7 +20,7 @@ def openlock(filename, operation, wait=True):
         operation |= LOCK_NB
     try:
         lockf(f.fileno(), operation)
-    except IOError, err:
+    except IOError as err:
         if not wait and err.errno in (EACCES, EAGAIN):
             from django.core.management.base import CommandError
             raise CommandError("Could not acquire lock on '%s' held by %s." %

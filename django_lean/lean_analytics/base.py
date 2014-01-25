@@ -7,13 +7,13 @@ class BaseAnalytics(object):
     def _id_from_session(self, session):
         try:
             return 'Session %s' % session.session_key
-        except AttributeError, e:
+        except AttributeError as e:
             raise IdentificationError(e)
 
     def _id_from_user(self, user):
         try:
             return 'User %d' % user.pk
-        except AttributeError, e:
+        except AttributeError as e:
             raise IdentificationError(e)
 
     def _compute_id(self, experiment_user):

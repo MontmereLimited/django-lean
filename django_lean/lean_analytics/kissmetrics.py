@@ -16,14 +16,14 @@ class KissMetrics(BaseAnalytics):
         id_from_session = self.middleware.id_from_session
         try:
             return id_from_session(session)
-        except AttributeError, e:
+        except AttributeError as e:
             raise IdentificationError(e)
 
     def _id_from_user(self, user):
         id_from_user = self.middleware.id_from_user
         try:
             return id_from_user(user)
-        except AttributeError, e:
+        except AttributeError as e:
             raise IdentificationError(e)
 
     def _identify(self, experiment_user):

@@ -42,7 +42,7 @@ def confirm_human(request):
 def record_experiment_goal(request, goal_name):
     try:
         GoalRecord.record(goal_name, WebUser(request))
-    except Exception, e:
+    except Exception as e:
         l.warn("unknown goal type '%s': %s" % (goal_name, e))
     
     return HttpResponse(TRANSPARENT_1X1_PNG, mimetype="image/png")

@@ -30,7 +30,7 @@ def _load_function(fully_qualified_name):
     module, attr = fully_qualified_name[:i], fully_qualified_name[i+1:]
     try:
         mod = __import__(module, globals(), locals(), [attr])
-    except ImportError, e:
+    except ImportError as e:
         raise Exception, 'Error importing engagement function %s: "%s"' % (module, e)
     try:
         func = getattr(mod, attr)

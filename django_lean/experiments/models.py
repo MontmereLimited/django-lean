@@ -62,7 +62,7 @@ class GoalRecord(models.Model):
             if settings.DEBUG:
                 raise
             l.warning("Can't find the GoalType named %s" % goal_name)
-        except Exception, e:
+        except Exception as e:
             l.exception("Unexpected exception in GoalRecord.record")
 
 

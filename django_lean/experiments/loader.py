@@ -42,7 +42,7 @@ class ExperimentLoader(object):
         experiment_names = None
         try:
             experiment_names = simplejson.load(fp)
-        except Exception, e:
+        except Exception as e:
             l.error("Unable to parse experiment file %s: %s" % (filename, e))
             raise e
         finally:
