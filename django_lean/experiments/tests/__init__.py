@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 import os, types, unittest
+# python3 forward compatibility
+if hasattr(types, 'ClassType'):
+    ClassType = types.ClassType
+    TypeType = types.TypeType
+else:
+    ClassType = type
+    TypeType = type
 
 # Import all Python test cases in this tests directory
 for filename in os.listdir(os.path.dirname(__file__)):
@@ -9,6 +16,6 @@ for filename in os.listdir(os.path.dirname(__file__)):
         module = __import__('.'.join((__name__, filename[:-3])), (), (), ["*"])
         for name in dir(module):
             function = getattr(module, name)
-            if (type(function) is types.TypeType and
+            if (type(function) is TypeType and
                 issubclass(function, unittest.TestCase)):
                 globals()[name] = function
