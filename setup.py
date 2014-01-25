@@ -7,7 +7,7 @@ and 50% to another, then comparing the performance of these two groups
 with regards to certain metrics.
 """
 
-from distutils.core import setup
+from setuptools import setup
 
 description, long_description = __doc__.split('\n\n', 1)
 
