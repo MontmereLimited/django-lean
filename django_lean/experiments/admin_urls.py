@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, include, url
 from django.contrib.admin.views.decorators import staff_member_required
 
 from django_lean.experiments.views import experiment_details, list_experiments
