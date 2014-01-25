@@ -35,6 +35,11 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
     packages=[
@@ -59,5 +64,5 @@ setup(
                                     'templates/experiments/include/*.html'],
         'django_lean.experiments.tests': ['data/*.json'],
     },
-    install_requires=['django >= 1.0', 'BeautifulSoup', 'mox'],
+    install_requires=['django >= 1.0', 'beautifulsoup4', 'mox'],
 )

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 from datetime import date, timedelta
 
 from django.contrib.auth.models import User
