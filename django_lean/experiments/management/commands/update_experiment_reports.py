@@ -31,9 +31,9 @@ def _load_function(fully_qualified_name):
     try:
         mod = __import__(module, globals(), locals(), [attr])
     except ImportError as e:
-        raise Exception, 'Error importing engagement function %s: "%s"' % (module, e)
+        raise Exception('Error importing engagement function %s: "%s"' % (module, e))
     try:
         func = getattr(mod, attr)
     except AttributeError:
-        raise Exception, 'Module "%s does not define a "%s" attribute' % (module, attr)
+        raise Exception('Module "%s does not define a "%s" attribute' % (module, attr))
     return func
