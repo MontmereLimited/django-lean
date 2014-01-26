@@ -86,8 +86,7 @@ class TestDailyReports(TestCase):
             def calculate_user_engagement_score(self, user,
                                               start_date, end_date):
                 test_case.assertNotEquals(user, None)
-                test_case.assertTrue(expected_engagement_score_calls.
-                                     has_key((user, start_date, end_date)))
+                test_case.assertTrue((user, start_date, end_date) in expected_engagement_score_calls)
                 return expected_engagement_score_calls[(user,
                                                      start_date, end_date)]
         
