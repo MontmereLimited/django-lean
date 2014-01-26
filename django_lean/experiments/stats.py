@@ -136,7 +136,7 @@ def betai(a,b,x):
     Usage:   lbetai(a,b,x)
     """
     if (x<0.0 or x>1.0):
-        raise ValueError, 'Bad x in lbetai'
+        raise ValueError('Bad x in lbetai')
     if (x==0.0 or x==1.0):
         bt = 0.0
     else:
