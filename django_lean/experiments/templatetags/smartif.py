@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 from django import template
 
+# python3 vs python2.7
+try:
+    unicode = unicode
+except NameError:
+    unicode = str
+    basestring = (str, bytes)
 
 register = template.Library()
 
