@@ -16,10 +16,10 @@ class BugViewTest(TestCase):
         url = reverse('django_lean.experiments.views.record_experiment_goal',
                       args=[goal])
         response = client.get(url)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(response['Content-Type'], 'image/png')
-        self.assertEquals(response['Cache-Control'], 'max-age=0')
-        self.assertEquals(response.content, TRANSPARENT_1X1_PNG)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'image/png')
+        self.assertEqual(response['Cache-Control'], 'max-age=0')
+        self.assertEqual(response.content, TRANSPARENT_1X1_PNG)
 
     def testPngResponse(self):
         experiment = Experiment(name="test-experiment")
@@ -44,33 +44,33 @@ class BugViewTest(TestCase):
         # so no records should be created
         self.call_goal(client, goal_type.name)
         
-        self.assertEquals(0, GoalRecord.objects.filter(goal_type=goal_type).count())
+        self.assertEqual(0, GoalRecord.objects.filter(goal_type=goal_type).count())
         
         nb_anonymous_visitors = AnonymousVisitor.objects.count()
         # force the user to be a verified human
         response = client.get(confirm_human_url)
-        self.assertEquals(response.status_code, 204)
+        self.assertEqual(response.status_code, 204)
         
         # force the anonymous visitor to be enrolled in an experiment
         response = client.get(experiment_url)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(nb_anonymous_visitors + 1,
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(nb_anonymous_visitors + 1,
                           AnonymousVisitor.objects.count())
         client.get('/test-experiment/%s' % experiment.name)
-        self.assertEquals(nb_anonymous_visitors + 1,
+        self.assertEqual(nb_anonymous_visitors + 1,
                           AnonymousVisitor.objects.count())
         
         # now call an existing goal again - it should be recorded
         self.call_goal(client, goal_type.name)
-        self.assertEquals(1, GoalRecord.objects.filter(goal_type=goal_type).count())
+        self.assertEqual(1, GoalRecord.objects.filter(goal_type=goal_type).count())
         
         # should be recorded again
         self.call_goal(client, goal_type.name)
-        self.assertEquals(2, GoalRecord.objects.filter(goal_type=goal_type).count())
+        self.assertEqual(2, GoalRecord.objects.filter(goal_type=goal_type).count())
         
         # validate that both of the records have the same anonymous_visitor
         two_goal_records = GoalRecord.objects.filter(goal_type=goal_type)
-        self.assertEquals(two_goal_records[0].anonymous_visitor,
+        self.assertEqual(two_goal_records[0].anonymous_visitor,
                           two_goal_records[1].anonymous_visitor)
         
         # try it with a registered user
@@ -87,5 +87,5 @@ class BugViewTest(TestCase):
         
         self.call_goal(client, goal_type.name)
         # since the user was registered, no new records should be created
-        self.assertEquals(2, GoalRecord.objects.filter(goal_type=goal_type).count())
+        self.assertEqual(2, GoalRecord.objects.filter(goal_type=goal_type).count())
     

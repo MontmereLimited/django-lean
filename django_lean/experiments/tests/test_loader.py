@@ -29,38 +29,38 @@ class TestExperimentLoader(TestCase):
         ExperimentLoader.load_experiments(filename1)
         
         new_count = Experiment.objects.all().count()
-        self.assertEquals(count+3, new_count)
+        self.assertEqual(count+3, new_count)
         
         experiment1 = Experiment.objects.get(name="Test Experiment #1")
         experiment2 = Experiment.objects.get(name="Test Experiment #2")
         experiment3 = Experiment.objects.get(name="Test Experiment #3")
-        self.assertEquals(0, Experiment.objects.filter(
+        self.assertEqual(0, Experiment.objects.filter(
                           name="Test Experiment #4").count())
         
-        self.assertEquals(experiment1.state, Experiment.DISABLED_STATE)
-        self.assertEquals(experiment1.start_date, None)
-        self.assertEquals(experiment1.end_date, None)
+        self.assertEqual(experiment1.state, Experiment.DISABLED_STATE)
+        self.assertEqual(experiment1.start_date, None)
+        self.assertEqual(experiment1.end_date, None)
         
         experiment1.state = Experiment.ENABLED_STATE
         experiment1.save()
         
-        self.assertNotEquals(experiment1.start_date, None)
+        self.assertNotEqual(experiment1.start_date, None)
         
         ExperimentLoader.load_experiments(filename1)
         
         # assert no new experiments loaded
         new_count = Experiment.objects.all().count()
-        self.assertEquals(count+3, new_count)
+        self.assertEqual(count+3, new_count)
         
         # make sure that experiment1 is still enabled
         experiment1 = Experiment.objects.get(name="Test Experiment #1")
-        self.assertEquals(experiment1.state, Experiment.ENABLED_STATE)
-        self.assertNotEquals(experiment1.start_date, None)
-        self.assertEquals(experiment1.end_date, None)
+        self.assertEqual(experiment1.state, Experiment.ENABLED_STATE)
+        self.assertNotEqual(experiment1.start_date, None)
+        self.assertEqual(experiment1.end_date, None)
         
         ExperimentLoader.load_experiments(filename2)
         # assert 1 new experiment loaded
         new_count = Experiment.objects.all().count()
-        self.assertEquals(count+4, new_count)
+        self.assertEqual(count+4, new_count)
         experiment4 = Experiment.objects.get(name="Test Experiment #4")
     

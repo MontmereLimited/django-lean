@@ -41,8 +41,8 @@ class TestManagement(TestCase):
             self.runner(['manage.py', 'update_experiment_reports'])
             
             #Make sure they were generated
-            self.assertEquals(5, DailyEngagementReport.objects.filter(
+            self.assertEqual(5, DailyEngagementReport.objects.filter(
                     experiment=self.experiment).count())
-            self.assertEquals(5, DailyConversionReport.objects.filter(
+            self.assertEqual(5, DailyConversionReport.objects.filter(
                     experiment=self.experiment).count())
     

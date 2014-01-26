@@ -22,49 +22,49 @@ class TestExperimentModels(TestCase):
                           lambda: Experiment(name="test_experiment_1").save())
         
         #test default values
-        self.assertEquals(experiment1.state, Experiment.DISABLED_STATE)
-        self.assertEquals(experiment1.start_date, None)
-        self.assertEquals(experiment1.end_date, None)
+        self.assertEqual(experiment1.state, Experiment.DISABLED_STATE)
+        self.assertEqual(experiment1.start_date, None)
+        self.assertEqual(experiment1.end_date, None)
         
         #enable the experiment
         experiment1.state = Experiment.ENABLED_STATE
         experiment1.save()
         
-        self.assertNotEquals(experiment1.start_date, None)
-        self.assertEquals(experiment1.end_date, None)
+        self.assertNotEqual(experiment1.start_date, None)
+        self.assertEqual(experiment1.end_date, None)
         
         #disable the experiement
         old_start_date = experiment1.start_date
         experiment1.state = Experiment.DISABLED_STATE
         experiment1.save()
-        self.assertEquals(experiment1.start_date, old_start_date)
-        self.assertNotEquals(experiment1.end_date, None)
+        self.assertEqual(experiment1.start_date, old_start_date)
+        self.assertNotEqual(experiment1.end_date, None)
         
         #enable the experiment
         old_end_date = experiment1.end_date
         experiment1.state = Experiment.ENABLED_STATE
         experiment1.save()
         
-        self.assertEquals(experiment1.start_date, old_start_date)
-        self.assertEquals(experiment1.end_date, old_end_date)
+        self.assertEqual(experiment1.start_date, old_start_date)
+        self.assertEqual(experiment1.end_date, old_end_date)
         
         #promote the experiment
         experiment1.state = Experiment.PROMOTED_STATE
         experiment1.save()
         
-        self.assertEquals(experiment1.start_date, old_start_date)
-        self.assertEquals(experiment1.end_date, old_end_date)
+        self.assertEqual(experiment1.start_date, old_start_date)
+        self.assertEqual(experiment1.end_date, old_end_date)
         
         experiment2 = Experiment(name= "Experiment 2")
         experiment2.save()
         experiment2.state = Experiment.ENABLED_STATE
         experiment2.save()
-        self.assertEquals(experiment2.start_date, experiment1.start_date)
+        self.assertEqual(experiment2.start_date, experiment1.start_date)
         experiment2.state = Experiment.PROMOTED_STATE
         experiment2.save()
         
-        self.assertNotEquals(experiment2.start_date, None)
-        self.assertNotEquals(experiment2.end_date, None)
+        self.assertNotEqual(experiment2.start_date, None)
+        self.assertNotEqual(experiment2.end_date, None)
     
     def testParticipants(self):
         user1 = User(username="user1", email="email1@example.com")
@@ -140,7 +140,7 @@ class TestExperimentModels(TestCase):
                           lambda: Participant(user=user3,
                                               experiment=experiment1).save())
         
-        self.assertNotEquals(participant11.enrollment_date, None)
+        self.assertNotEqual(participant11.enrollment_date, None)
         
         participant11.enrollment_date = None
         self.assertRaises(Exception,
@@ -168,7 +168,7 @@ class TestExperimentModels(TestCase):
         for i in range(1000):
             username="testuser%s" % i
             in_test1 = Experiment.test(experiment1.name, TestUser(username=username))
-            self.assertEquals(in_test1, not Experiment.control(experiment1.name,
+            self.assertEqual(in_test1, not Experiment.control(experiment1.name,
                                                                TestUser(username=username)))
             if in_test1:
                 num_test1 += 1
@@ -176,7 +176,7 @@ class TestExperimentModels(TestCase):
                 num_control1 += 1
             
             in_test2 = not Experiment.control(experiment2.name, TestUser(username=username))
-            self.assertEquals(in_test2, Experiment.test(experiment2.name,
+            self.assertEqual(in_test2, Experiment.test(experiment2.name,
                                                         TestUser(username=username)))
             
             if in_test2:
@@ -200,23 +200,23 @@ class TestExperimentModels(TestCase):
         nb_records = GoalRecord.objects.all().count()
 
         GoalRecord.record('existing-goal', TestUser(anonymous_visitor=anonymous_visitor))
-        self.assertEquals(nb_records + 1, GoalRecord.objects.all().count())
+        self.assertEqual(nb_records + 1, GoalRecord.objects.all().count())
         self.assertEqual(nb_types, GoalType.objects.all().count())
 
         with patch(settings, 'LEAN_AUTOCREATE_GOAL_TYPES', False):
             GoalRecord.record('inexistant-goal', TestUser(anonymous_visitor=anonymous_visitor))
-            self.assertEquals(nb_records + 1, GoalRecord.objects.all().count())
+            self.assertEqual(nb_records + 1, GoalRecord.objects.all().count())
             self.assertEqual(nb_types, GoalType.objects.all().count())
 
         with patch(settings, 'LEAN_AUTOCREATE_GOAL_TYPES', NotImplemented):
             GoalRecord.record('inexistant-goal', TestUser(anonymous_visitor=anonymous_visitor))
-            self.assertEquals(nb_records + 1, GoalRecord.objects.all().count())
+            self.assertEqual(nb_records + 1, GoalRecord.objects.all().count())
             self.assertEqual(nb_types, GoalType.objects.all().count())
             
         with patch(settings, 'LEAN_AUTOCREATE_GOAL_TYPES', True):
             GoalRecord.record('inexistant-goal',
                               TestUser(anonymous_visitor=anonymous_visitor))
-            self.assertEquals(nb_records + 2, GoalRecord.objects.all().count())
+            self.assertEqual(nb_records + 2, GoalRecord.objects.all().count())
             self.assertEqual(nb_types + 1, GoalType.objects.all().count())
         
 
@@ -251,13 +251,13 @@ class TestExperimentModels(TestCase):
         
         nb_records = GoalRecord.objects.all().count()
         GoalRecord.record('test-goal', TestUser())
-        self.assertEquals(nb_records, GoalRecord.objects.all().count())
+        self.assertEqual(nb_records, GoalRecord.objects.all().count())
         GoalRecord.record('test-goal', TestUser(username='test'))
-        self.assertEquals(nb_records, GoalRecord.objects.all().count())
+        self.assertEqual(nb_records, GoalRecord.objects.all().count())
         GoalRecord.record('test-goal', TestUser(anonymous_visitor=anonymous_visitor))
-        self.assertEquals(nb_records + 1, GoalRecord.objects.all().count())
+        self.assertEqual(nb_records + 1, GoalRecord.objects.all().count())
         GoalRecord.record('test-goal', TestUser(anonymous_visitor=anonymous_visitor))
-        self.assertEquals(nb_records + 2, GoalRecord.objects.all().count())
+        self.assertEqual(nb_records + 2, GoalRecord.objects.all().count())
     
     def testBotExclusion(self):
         experiment = Experiment(name="bot_experiment")
@@ -268,10 +268,10 @@ class TestExperimentModels(TestCase):
         user = TestUser(verified_human=False)
         participants_count = Participant.objects.all().count()
         in_test = Experiment.test(experiment.name, user)
-        self.assertEquals(None, user.get_anonymous_id())
-        self.assertEquals(participants_count, Participant.objects.all().count())
+        self.assertEqual(None, user.get_anonymous_id())
+        self.assertEqual(participants_count, Participant.objects.all().count())
         
         enrollments = user.get_added_enrollments()
-        self.assertEquals(len(enrollments.keys()), 1)
+        self.assertEqual(len(enrollments.keys()), 1)
         self.assertTrue(experiment.name in enrollments.keys())
     

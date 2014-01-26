@@ -50,14 +50,14 @@ class TestParticipants(TestCase):
             user = TestUser()
             in_test = Experiment.test("enabled", user)
             anonymous_id = user.get_anonymous_id()
-            self.assertNotEquals(None, anonymous_id)
+            self.assertNotEqual(None, anonymous_id)
             in_control = Experiment.control("enabled", user)
-            self.assertEquals(user.get_anonymous_id(), anonymous_id)
-            self.assertNotEquals(in_test, in_control)
-            self.assertEquals(in_test, Experiment.test("enabled", user))
-            self.assertEquals(user.get_anonymous_id(), anonymous_id)
-            self.assertEquals(in_control, Experiment.control("enabled", user))
-            self.assertEquals(user.get_anonymous_id(), anonymous_id)
+            self.assertEqual(user.get_anonymous_id(), anonymous_id)
+            self.assertNotEqual(in_test, in_control)
+            self.assertEqual(in_test, Experiment.test("enabled", user))
+            self.assertEqual(user.get_anonymous_id(), anonymous_id)
+            self.assertEqual(in_control, Experiment.control("enabled", user))
+            self.assertEqual(user.get_anonymous_id(), anonymous_id)
 
             if in_test:
                 test_user = user
@@ -70,7 +70,7 @@ class TestParticipants(TestCase):
         experiment = Experiment(name="disabled")
         experiment.save()
         self.assertFalse(Experiment.test("disabled", user))
-        self.assertEquals(None, user.get_anonymous_id())
+        self.assertEqual(None, user.get_anonymous_id())
 
     def testEnabledPromotedAndDisabledExperiment(self):
         # enabled test, new user (prove we get both results)
@@ -84,17 +84,17 @@ class TestParticipants(TestCase):
             user = TestUser(username="user%s" % i)
             in_test = Experiment.test("enabled", user)
             in_control = Experiment.control("enabled", user)
-            self.assertNotEquals(in_test, in_control)
-            self.assertEquals(in_test, Experiment.test("enabled", user))
-            self.assertEquals(in_control, Experiment.control("enabled", user))
+            self.assertNotEqual(in_test, in_control)
+            self.assertEqual(in_test, Experiment.test("enabled", user))
+            self.assertEqual(in_control, Experiment.control("enabled", user))
             if in_test:
                 test_user = user
             if in_control:
                 control_user = user
 
-        self.assertNotEquals(None, test_user)
-        self.assertNotEquals(None, control_user)
-        self.assertNotEquals(test_user, control_user)
+        self.assertNotEqual(None, test_user)
+        self.assertNotEqual(None, control_user)
+        self.assertNotEqual(test_user, control_user)
 
         # promoted test with an enrolled user
         # (prove we get both results, then that all users are in test)

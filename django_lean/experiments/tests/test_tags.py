@@ -68,9 +68,9 @@ class ExperimentTagsTest(TestCase):
         for i in range(100):
             client = client_factory(i)
             response = client.get(confirm_human_url)
-            self.assertEquals(204, response.status_code)
+            self.assertEqual(204, response.status_code)
             response = client.get(url)
-            self.assertEquals(200, response.status_code)
+            self.assertEqual(200, response.status_code)
             in_test = "test" in response.content.lower()
             in_control = "control" in response.content.lower()
             self.assertTrue(in_test != in_control)
@@ -159,13 +159,13 @@ class ExperimentTagsTest(TestCase):
             found_control = found_control or (not in_test)
             
             # make sure we get the same result from a second call
-            self.assertEquals(in_test,
+            self.assertEqual(in_test,
                               self.doRenderExperiment(username, "test"))
             
             # make sure that the result of calling control is the opposite of
             # the result of calling test
             in_control = self.doRenderExperiment(username, "control")
-            self.assertEquals(not in_test, in_control)
+            self.assertEqual(not in_test, in_control)
         
         self.assertTrue(found_control and found_test)
     
@@ -217,7 +217,7 @@ class ExperimentTagsTest(TestCase):
             # assert that exactly two entries were populated in the
             # 'client_side_experiments' dict in the context and that they are
             # equal to the names of our two experiments
-            self.assertEquals(2, len(c['client_side_experiments'].keys()))
+            self.assertEqual(2, len(c['client_side_experiments'].keys()))
             self.assertTrue(self.experiment.name in
                                c['client_side_experiments'])
             self.assertTrue(self.other_experiment.name in

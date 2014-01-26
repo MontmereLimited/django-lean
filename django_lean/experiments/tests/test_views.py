@@ -92,12 +92,12 @@ class TestExperimentViews(object):
     def testListExperimentsView(self):
         url = reverse('experiments.views.list_experiments')
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         header, data = get_tables(response.content)[0]
         data.sort()
-        self.assertEquals([u'Name', u'Status', u'Start Date', u'End Date'],
+        self.assertEqual([u'Name', u'Status', u'Start Date', u'End Date'],
                           header)
-        self.assertEquals([[u'experiment 1', u'Enabled',
+        self.assertEqual([[u'experiment 1', u'Enabled',
                             unicode(self.experiment1.start_date), u'None'],
                            [u'experiment 2', u'Disabled', u'None', u'None'],
                            [u'experiment 3', u'Promoted',
@@ -110,11 +110,11 @@ class TestExperimentViews(object):
         url = reverse('experiments.views.experiment_details',
                       args=['experiment 1'])
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue('<title>Log in' in response.content)
         url = reverse('experiments.views.list_experiments')
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue('<title>Log in' in response.content)
     
     def testRegularUserCannotAccessReports(self):
@@ -131,39 +131,39 @@ class TestExperimentViews(object):
         url = reverse('experiments.views.experiment_details',
                       args=['experiment 1'])
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue('<title>Log in' in response.content)
         url = reverse('experiments.views.list_experiments')
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue('<title>Log in' in response.content)
     
     def test404IfExperimentDoesntExist(self):
         url = reverse('experiments.views.experiment_details',
                       args=['inexistant experiment'])
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
     
     def testExperimentDetailsView(self):
         url = reverse('experiments.views.experiment_details',
                       args=['experiment 1'])
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         tables = get_tables(response.content)
         experiment_properties = tables.pop(0)
-        self.assertEquals([u'Property', u'Value'],
+        self.assertEqual([u'Property', u'Value'],
                           experiment_properties[0])
-        self.assertEquals([[u'Experiment Name', u'experiment 1'],
+        self.assertEqual([[u'Experiment Name', u'experiment 1'],
                            [u'Status', u'Enabled'],
                            [u'Start Date',
                             unicode(self.experiment1.start_date)],
                            [u'End Date', u'None']],
                           experiment_properties[1])
         conversion_summary = tables.pop(0)
-        self.assertEquals([u'&nbsp;', u'Control Group', u'Test Group',
+        self.assertEqual([u'&nbsp;', u'Control Group', u'Test Group',
                            u'Improvement', u'Confidence'],
                           conversion_summary[0])
-        self.assertEquals([[u'Participants', u'27', u'39', u'&nbsp;',
+        self.assertEqual([[u'Participants', u'27', u'39', u'&nbsp;',
                             u'&nbsp;'],
                            [u'test_goal_0', u'7 (25.9 %)', u'11 (28.2 %)',
                             u'8 %', u'45 %'],
@@ -175,10 +175,10 @@ class TestExperimentViews(object):
                             u'87 %']],
                           conversion_summary[1])
         engagement_summary = tables.pop(0)
-        self.assertEquals([u'&nbsp;', u'Control Group', u'Test Group',
+        self.assertEqual([u'&nbsp;', u'Control Group', u'Test Group',
                            u'Improvement', u'Confidence'],
                           engagement_summary[0])
-        self.assertEquals([[u'Participants', u'3', u'5', u'&nbsp;', u'&nbsp;'],
+        self.assertEqual([[u'Participants', u'3', u'5', u'&nbsp;', u'&nbsp;'],
                            [u'Engagement Score', u'3.2', u'2.3', u'-28 %',
                             u'93 %']],
                           engagement_summary[1])
@@ -186,15 +186,15 @@ class TestExperimentViews(object):
         self.assertTrue(conversion_details[0])
         self.assertTrue(conversion_details[1])
         engagement_details = tables.pop(0)
-        self.assertEquals([u'Report Date', u'Control Group Size',
+        self.assertEqual([u'Report Date', u'Control Group Size',
                            u'Control Group Score', u'Test Group Size',
                            u'Test Group Score', u'Test Group Improvement',
                            u'Confidence'],
                           engagement_details[0])
-        self.assertEquals([unicode(days_ago(1)), u'3', u'3.2', u'5', u'2.3',
+        self.assertEqual([unicode(days_ago(1)), u'3', u'3.2', u'5', u'2.3',
                            u'-28 %', u'93 %'],
                           engagement_details[1][0])
-        self.assertEquals([], tables)
+        self.assertEqual([], tables)
     
     def testVerifyHuman(self):
         experiment = Experiment(name="experiment")
@@ -214,51 +214,51 @@ class TestExperimentViews(object):
         experiment_url = reverse('experiments.tests.views.experiment_test',
                                  args=[experiment.name])
         response = self.client.get(experiment_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         
-        self.assertEquals(original_participants_count,
+        self.assertEqual(original_participants_count,
                           Participant.objects.all().count())
-        self.assertEquals(original_anonymous_visitors_count,
+        self.assertEqual(original_anonymous_visitors_count,
                           AnonymousVisitor.objects.all().count())
         
         confirm_human_url = reverse('experiments.views.confirm_human')
         response = self.client.get(confirm_human_url)
-        self.assertEquals(response.status_code, 204)
-        self.assertEquals(0, len(response.content))
-        self.assertEquals(original_participants_count+1,
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(0, len(response.content))
+        self.assertEqual(original_participants_count+1,
                           Participant.objects.all().count())
-        self.assertEquals(original_anonymous_visitors_count+1,
+        self.assertEqual(original_anonymous_visitors_count+1,
                           AnonymousVisitor.objects.all().count())
         
         # calling it again does nothing
         response = self.client.get(confirm_human_url)
-        self.assertEquals(response.status_code, 204)
-        self.assertEquals(0, len(response.content))
-        self.assertEquals(original_participants_count+1,
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(0, len(response.content))
+        self.assertEqual(original_participants_count+1,
                           Participant.objects.all().count())
-        self.assertEquals(original_anonymous_visitors_count+1,
+        self.assertEqual(original_anonymous_visitors_count+1,
                           AnonymousVisitor.objects.all().count())
         
         other_experiment_url = reverse(
             'experiments.tests.views.experiment_test',
             args=[other_experiment.name])
         response = self.client.get(other_experiment_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         
         # a new participant is immediately created for the new experiment
-        self.assertEquals(original_participants_count + 2,
+        self.assertEqual(original_participants_count + 2,
                           Participant.objects.all().count())
         # the existing anonymous visitor is reused
-        self.assertEquals(original_anonymous_visitors_count + 1,
+        self.assertEqual(original_anonymous_visitors_count + 1,
                           AnonymousVisitor.objects.all().count())
         
         # the new experiment does not cause storage of a temporary enrollment
         response = self.client.get(confirm_human_url)
-        self.assertEquals(response.status_code, 204)
-        self.assertEquals(0, len(response.content))
-        self.assertEquals(original_participants_count+2,
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(0, len(response.content))
+        self.assertEqual(original_participants_count+2,
                           Participant.objects.all().count())
-        self.assertEquals(original_anonymous_visitors_count+1,
+        self.assertEqual(original_anonymous_visitors_count+1,
                           AnonymousVisitor.objects.all().count())
     
     def testGroupSanity(self):
@@ -271,6 +271,6 @@ class TestExperimentViews(object):
         for i in range(100):
             self.client = Client()
             response = self.client.get(experiment_url)
-            self.assertEquals(response.status_code, 200)
+            self.assertEqual(response.status_code, 200)
             self.assertTrue(response.content.strip().lower() in ("test",
                                                                  "control"))

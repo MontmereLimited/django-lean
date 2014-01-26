@@ -85,7 +85,7 @@ class TestDailyReports(TestCase):
         class EngagementScoreCalculatorStub(object):
             def calculate_user_engagement_score(self, user,
                                               start_date, end_date):
-                test_case.assertNotEquals(user, None)
+                test_case.assertNotEqual(user, None)
                 test_case.assertTrue((user, start_date, end_date) in expected_engagement_score_calls)
                 return expected_engagement_score_calls[(user,
                                                      start_date, end_date)]
@@ -99,8 +99,8 @@ class TestDailyReports(TestCase):
         self.assertAlmostEqual((3.2 + 2.5 + 4.1 + 0)/4.0,
                                 experiment_report.test_score)
         self.assertAlmostEqual(0.0, experiment_report.control_score)
-        self.assertEquals(4, experiment_report.test_group_size)
-        self.assertEquals(4, experiment_report.control_group_size)
+        self.assertEqual(4, experiment_report.test_group_size)
+        self.assertEqual(4, experiment_report.control_group_size)
         self.assertAlmostEqual(96.819293337188498, experiment_report.confidence)
     
     def testZeroParticipantExperiment(self):
@@ -117,10 +117,10 @@ class TestDailyReports(TestCase):
         
         mocker.VerifyAll()
         
-        self.assertEquals(None, experiment_report.test_score)
-        self.assertEquals(None, experiment_report.control_score)
-        self.assertEquals(0, experiment_report.test_group_size)
-        self.assertEquals(0, experiment_report.control_group_size)
+        self.assertEqual(None, experiment_report.test_score)
+        self.assertEqual(None, experiment_report.control_score)
+        self.assertEqual(0, experiment_report.test_group_size)
+        self.assertEqual(0, experiment_report.control_group_size)
     
     def testGenerateAllDailyEngagementReports(self):
         class DummyEngagementCalculator(object):
@@ -142,7 +142,7 @@ class TestDailyReports(TestCase):
                             date=date.today() - timedelta(days=4))
         DailyEngagementReport.objects.get(experiment=self.experiment,
                             date=date.today() - timedelta(days=5))
-        self.assertEquals(5, DailyEngagementReport.objects.filter(
+        self.assertEqual(5, DailyEngagementReport.objects.filter(
                                         experiment=self.experiment).count())
         DailyEngagementReport.objects.get(experiment=self.other_experiment,
                           date=date.today() - timedelta(days=3))
@@ -155,7 +155,7 @@ class TestDailyReports(TestCase):
         DailyEngagementReport.objects.get(experiment=self.other_experiment,
                           date=date.today() - timedelta(days=7))
         
-        self.assertEquals(5, DailyEngagementReport.objects.filter(
+        self.assertEqual(5, DailyEngagementReport.objects.filter(
                                     experiment=self.other_experiment).count())
     
     def create_goal_record(self, record_datetime, anonymous_visitor, goal_type):
@@ -195,36 +195,36 @@ class TestDailyReports(TestCase):
         self.create_goal_record(days[4], anonymous_visitor, goal_types[0])
         self.create_goal_record(days[4], anonymous_visitor, goal_types[0])
         
-        self.assertEquals(nb_goal_records + 8, GoalRecord.objects.all().count())
+        self.assertEqual(nb_goal_records + 8, GoalRecord.objects.all().count())
         
         # wasn't enrolled yet!
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[0], days[0]), 0)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[1], days[0]), 0)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[2], days[0]), 0)
-        self.assertEquals(calculate_participant_conversion(participant, None, days[0]), 0)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[0], days[1]), 0)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[1], days[1]), 0)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[2], days[1]), 0)
-        self.assertEquals(calculate_participant_conversion(participant, None, days[1]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[0], days[0]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[1], days[0]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[2], days[0]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, None, days[0]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[0], days[1]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[1], days[1]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[2], days[1]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, None, days[1]), 0)
         
         # now enrolled
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[0], days[2]), 0)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[1], days[2]), 1)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[2], days[2]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[0], days[2]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[1], days[2]), 1)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[2], days[2]), 0)
         # "any" is one
-        self.assertEquals(calculate_participant_conversion(participant, None, days[2]), 1)
+        self.assertEqual(calculate_participant_conversion(participant, None, days[2]), 1)
         
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[0], days[3]), 1)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[1], days[3]), 1)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[2], days[3]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[0], days[3]), 1)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[1], days[3]), 1)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[2], days[3]), 0)
         # "any" is one, even though two different goals were achieved
-        self.assertEquals(calculate_participant_conversion(participant, None, days[3]), 1)
+        self.assertEqual(calculate_participant_conversion(participant, None, days[3]), 1)
         
         # there were three conversions on this day for goal 0, but we only count the first!
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[0], days[4]), 1)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[1], days[4]), 1)
-        self.assertEquals(calculate_participant_conversion(participant, goal_types[2], days[4]), 0)
-        self.assertEquals(calculate_participant_conversion(participant, None, days[4]), 1)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[0], days[4]), 1)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[1], days[4]), 1)
+        self.assertEqual(calculate_participant_conversion(participant, goal_types[2], days[4]), 0)
+        self.assertEqual(calculate_participant_conversion(participant, None, days[4]), 1)
     
     def testGoalTypeConversionCalculator(self):
         mocker = mox.Mox()
@@ -244,7 +244,7 @@ class TestDailyReports(TestCase):
         
         mocker.ReplayAll()
         
-        self.assertEquals(2, calculate_goal_type_conversion(
+        self.assertEqual(2, calculate_goal_type_conversion(
                 goal_type, participants, report_date, participant_conversion_calculator))
         
         mocker.VerifyAll()
@@ -312,25 +312,25 @@ class TestDailyReports(TestCase):
         ex1day2 = find_experiment_group_participants(Participant.TEST_GROUP, experiment, days[2])
         ex1day2visitors = [p.anonymous_visitor for p in ex1day2]
         self.assertTrue(anonymous_visitors[0] in ex1day2visitors)
-        self.assertEquals(1, len(ex1day2visitors))
+        self.assertEqual(1, len(ex1day2visitors))
         
         ex1day4test = find_experiment_group_participants(Participant.TEST_GROUP, experiment, days[4])
         ex1day4testvisitors = [p.anonymous_visitor for p in ex1day4test]
         self.assertTrue(anonymous_visitors[0] in ex1day4testvisitors)
         self.assertTrue(anonymous_visitors[3] in ex1day4testvisitors)
-        self.assertEquals(2, len(ex1day4testvisitors))
+        self.assertEqual(2, len(ex1day4testvisitors))
         
         ex1day4control = find_experiment_group_participants(Participant.CONTROL_GROUP, experiment, days[4])
         ex1day4controlvisitors = [p.anonymous_visitor for p in ex1day4control]
         self.assertTrue(anonymous_visitors[1] in ex1day4controlvisitors)
         self.assertTrue(anonymous_visitors[4] in ex1day4controlvisitors)
-        self.assertEquals(2, len(ex1day4controlvisitors))
+        self.assertEqual(2, len(ex1day4controlvisitors))
         
         ex2day5test = find_experiment_group_participants(Participant.TEST_GROUP, other_experiment, days[5])
         ex2day5testvisitors = [p.anonymous_visitor for p in ex2day5test]
         self.assertTrue(anonymous_visitors[2] in ex2day5testvisitors)
         self.assertTrue(anonymous_visitors[5] in ex2day5testvisitors)
-        self.assertEquals(2, len(ex2day5testvisitors))
+        self.assertEqual(2, len(ex2day5testvisitors))
     
     def testGetConversionData(self):
         days = [datetime.combine(date.today() + timedelta(days=i), time(hour=12))
@@ -372,10 +372,10 @@ class TestDailyReports(TestCase):
         
         data = get_conversion_data(experiment, yesterday)
         
-        self.assertEquals(data['date'], yesterday)
+        self.assertEqual(data['date'], yesterday)
         self.assertTrue("totals" in data)
         self.assertTrue("goal_types" in data)
-        self.assertEquals(4, len(data["goal_types"].keys()))
+        self.assertEqual(4, len(data["goal_types"].keys()))
         
         for goal_type in goal_types[0:3]:
             self.assertTrue(goal_type.name in data["goal_types"])
@@ -388,10 +388,10 @@ class TestDailyReports(TestCase):
             self.assertTrue("improvement" in goal_type_data)
             self.assertTrue("confidence" in goal_type_data)
         
-        self.assertEquals(None, data["goal_types"][goal_types[3].name])
+        self.assertEqual(None, data["goal_types"][goal_types[3].name])
         
-        self.assertEquals(139, data["test_group_size"])
-        self.assertEquals(142, data["control_group_size"])
+        self.assertEqual(139, data["test_group_size"])
+        self.assertEqual(142, data["control_group_size"])
         
         totals = data["totals"]
         
@@ -399,25 +399,25 @@ class TestDailyReports(TestCase):
         expected_control_rate = 12. / 142. * 100.
         expected_improvement = (expected_test_rate - expected_control_rate) / expected_control_rate * 100.
         
-        self.assertAlmostEquals(expected_test_rate, totals["test_rate"])
-        self.assertAlmostEquals(expected_control_rate, totals["control_rate"])
-        self.assertAlmostEquals(expected_improvement, totals["improvement"])
-        self.assertAlmostEquals(87.3, totals["confidence"])
-        self.assertEquals(17, totals["test_count"])
-        self.assertEquals(12, totals["control_count"])
+        self.assertAlmostEqual(expected_test_rate, totals["test_rate"])
+        self.assertAlmostEqual(expected_control_rate, totals["control_rate"])
+        self.assertAlmostEqual(expected_improvement, totals["improvement"])
+        self.assertAlmostEqual(87.3, totals["confidence"])
+        self.assertEqual(17, totals["test_count"])
+        self.assertEqual(12, totals["control_count"])
         
-        self.assertEquals(0, data["goal_types"][goal_types[0].name]["control_rate"])
-        self.assertAlmostEquals(11./139*100., data["goal_types"][goal_types[0].name]["test_rate"])
-        self.assertEquals(None, data["goal_types"][goal_types[0].name]["improvement"])
-        self.assertAlmostEquals(65.3, data["goal_types"][goal_types[0].name]["confidence"])
-        self.assertEquals(11, data["goal_types"][goal_types[0].name]["test_count"])
-        self.assertEquals(0, data["goal_types"][goal_types[0].name]["control_count"])
+        self.assertEqual(0, data["goal_types"][goal_types[0].name]["control_rate"])
+        self.assertAlmostEqual(11./139*100., data["goal_types"][goal_types[0].name]["test_rate"])
+        self.assertEqual(None, data["goal_types"][goal_types[0].name]["improvement"])
+        self.assertAlmostEqual(65.3, data["goal_types"][goal_types[0].name]["confidence"])
+        self.assertEqual(11, data["goal_types"][goal_types[0].name]["test_count"])
+        self.assertEqual(0, data["goal_types"][goal_types[0].name]["control_count"])
         
-        self.assertAlmostEquals(21./142*100., data["goal_types"][goal_types[1].name]["control_rate"])
-        self.assertEquals(None, data["goal_types"][goal_types[1].name]["confidence"])
-        self.assertEquals(None, data["goal_types"][goal_types[1].name]["improvement"])
+        self.assertAlmostEqual(21./142*100., data["goal_types"][goal_types[1].name]["control_rate"])
+        self.assertEqual(None, data["goal_types"][goal_types[1].name]["confidence"])
+        self.assertEqual(None, data["goal_types"][goal_types[1].name]["improvement"])
         
-        self.assertAlmostEquals((23./139-21./142)/(21./142)*100.,
+        self.assertAlmostEqual((23./139-21./142)/(21./142)*100.,
                                 data["goal_types"][goal_types[2].name]["improvement"])
 
 
@@ -522,36 +522,36 @@ class TestDailyReports(TestCase):
         
         mocker.VerifyAll()
         
-        self.assertEquals(results.count(), 5)
+        self.assertEqual(results.count(), 5)
         report_days = [ d.date() for d in days[2:7]]
         for i in range(5):
-            self.assertEquals(results[i].date, report_days[4-i])
+            self.assertEqual(results[i].date, report_days[4-i])
         
         # Day 2
-        self.assertEquals(12, results[4].test_group_size)
-        self.assertEquals(7, results[4].control_group_size)
-        self.assertEquals(5, results[4].overall_test_conversion)
-        self.assertEquals(4, results[4].overall_control_conversion)
+        self.assertEqual(12, results[4].test_group_size)
+        self.assertEqual(7, results[4].control_group_size)
+        self.assertEqual(5, results[4].overall_test_conversion)
+        self.assertEqual(4, results[4].overall_control_conversion)
         
         day_2_goal_4_test_conversion = DailyConversionReportGoalData.objects.filter(
             report=results[4],
             goal_type=goal_types[0])[0].test_conversion
-        self.assertEquals(0, day_2_goal_4_test_conversion)
+        self.assertEqual(0, day_2_goal_4_test_conversion)
         
         day_2_goal_2_control_conversion = DailyConversionReportGoalData.objects.filter(
             report=results[4],
             goal_type=goal_types[2])[0].control_conversion
-        self.assertEquals(3, day_2_goal_2_control_conversion)
+        self.assertEqual(3, day_2_goal_2_control_conversion)
         
         # Day 3
-        self.assertEquals(5, results[3].test_group_size)
+        self.assertEqual(5, results[3].test_group_size)
         # Day 4
-        self.assertEquals(0, results[2].test_group_size)
-        self.assertEquals(None, results[2].confidence)
+        self.assertEqual(0, results[2].test_group_size)
+        self.assertEqual(None, results[2].confidence)
         day_4_goal_1_confidence = DailyConversionReportGoalData.objects.filter(
             report=results[2],
             goal_type=goal_types[0])[0].confidence
-        self.assertEquals(None, day_4_goal_1_confidence)
+        self.assertEqual(None, day_4_goal_1_confidence)
         # Day 5
         day_5_goal_0_confidence = DailyConversionReportGoalData.objects.filter(
             report=results[1],
