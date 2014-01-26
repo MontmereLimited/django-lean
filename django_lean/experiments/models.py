@@ -2,13 +2,12 @@
 import logging
 l = logging.getLogger(__name__)
 
-from datetime import date
+from django.utils import timezone
 import random
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
-from django.core.exceptions import ObjectDoesNotExist
 
 from django_lean.experiments.signals import goal_recorded, user_enrolled
 
@@ -62,7 +61,7 @@ class GoalRecord(models.Model):
             if settings.DEBUG:
                 raise
             l.warning("Can't find the GoalType named %s" % goal_name)
-        except Exception as e:
+        except Exception:
             l.exception("Unexpected exception in GoalRecord.record")
 
 
@@ -184,20 +183,20 @@ class Experiment(models.Model):
 
             if old_self.state != self.state:
                 if (old_self.state == Experiment.DISABLED_STATE
-                    and self.state == Experiment.ENABLED_STATE
-                    and not old_self.start_date):
+                        and self.state == Experiment.ENABLED_STATE
+                        and not old_self.start_date):
                     # enabling
-                    self.start_date = date.today()
+                    self.start_date = timezone.now().date()
                 elif (old_self.state == Experiment.ENABLED_STATE
                       and self.state == Experiment.DISABLED_STATE
                       and not old_self.end_date):
                     # disabling
-                    self.end_date = date.today()
+                    self.end_date = timezone.now().date()
                 elif (old_self.state == Experiment.ENABLED_STATE
                       and self.state == Experiment.PROMOTED_STATE
                       and not old_self.end_date):
                     #promoting
-                    self.end_date = date.today()
+                    self.end_date = timezone.now().date()
         return super(Experiment, self).save(*args, **kwargs)
 
     @staticmethod
@@ -249,7 +248,7 @@ class Experiment(models.Model):
 
         assigned_group = user.get_enrollment(experiment)
 
-        if assigned_group == None:
+        if assigned_group is None:
             assigned_group = random.choice((Participant.CONTROL_GROUP,
                                             Participant.TEST_GROUP))
             user.set_enrollment(experiment, assigned_group)
@@ -261,7 +260,7 @@ class Participant(models.Model):
     """A participant in a split testing experiment """
 
     class Meta:
-        unique_together= (('user', 'experiment'),
+        unique_together = (('user', 'experiment'),
                           ('anonymous_visitor', 'experiment'))
 
     CONTROL_GROUP = 0
@@ -278,7 +277,7 @@ class Participant(models.Model):
     anonymous_visitor = models.ForeignKey(AnonymousVisitor, null=True, blank=True)
 
     def __unicode__(self):
-        if self.user: # can be null
+        if self.user:  # can be null
             username = self.user.username
         else:
             username = 'anonymous#%d' % self.anonymous_visitor.id
@@ -314,7 +313,7 @@ class DailyConversionReport(models.Model):
     confidence = models.FloatField(null=True)
 
 
-class  DailyConversionReportGoalData(models.Model):
+class DailyConversionReportGoalData(models.Model):
     """Stores the daily conversion report goal data."""
     report = models.ForeignKey(DailyConversionReport, related_name="goal_data")
     goal_type = models.ForeignKey(GoalType)
