@@ -37,12 +37,8 @@ class WebUser(object):
         anonymous_visitor = None
         anonymous_id = self.get_anonymous_id()
         if anonymous_id is not None:
-            anonymous_visitors = AnonymousVisitor.objects.filter(
-                id=anonymous_id
-            )
-            if len(anonymous_visitors) == 1:
-                anonymous_visitor = anonymous_visitors[0]
-        if not anonymous_visitor:
+            anonymous_visitor = AnonymousVisitor.objects.get(pk=anonymous_id)
+        else:
             anonymous_visitor = AnonymousVisitor.objects.create()
             self.set_anonymous_id(anonymous_visitor.id)
         return anonymous_visitor
