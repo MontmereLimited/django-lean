@@ -184,10 +184,10 @@ class TestExperimentModels(TestCase):
             else:
                 num_control2 += 1
         
-        self.assert_(num_control1 > 400)
-        self.assert_(num_control2 > 400)
-        self.assert_(num_test1 > 400)
-        self.assert_(num_test2 > 400)
+        self.assertTrue(num_control1 > 400)
+        self.assertTrue(num_control2 > 400)
+        self.assertTrue(num_test1 > 400)
+        self.assertTrue(num_test2 > 400)
 
     def testMissingGoalType(self):
         anonymous_visitor = AnonymousVisitor()
