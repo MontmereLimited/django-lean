@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import mox
+from mox3 import mox
 
 from django.core.urlresolvers import reverse
 from django.template import Context

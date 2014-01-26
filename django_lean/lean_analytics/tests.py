@@ -16,7 +16,7 @@ from django_lean.lean_analytics import (get_all_analytics,
                                         IdentificationError)
 from django_lean.lean_analytics.base import BaseAnalytics
 
-import mox
+from mox3 import mox
 
 class TestAnalytics(TestCase):
     def test_get_all_analytics_names(self):

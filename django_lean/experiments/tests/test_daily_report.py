@@ -2,7 +2,7 @@
 import logging
 l = logging.getLogger(__name__)
 
-import mox
+from mox3 import mox
 
 from datetime import date, datetime, time, timedelta
 

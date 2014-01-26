@@ -3,7 +3,7 @@ from datetime import date, datetime, time, timedelta
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-import mox
+from mox3 import mox
 
 from django_lean.lean_retention.models import DailyActivity
 from django_lean.lean_retention.reports import (sort_retention_periods,

@@ -64,5 +64,5 @@ setup(
                                     'templates/experiments/include/*.html'],
         'django_lean.experiments.tests': ['data/*.json'],
     },
-    install_requires=['django >= 1.0', 'beautifulsoup4', 'mox'],
+    install_requires=['django >= 1.0', 'beautifulsoup4', 'mox3'],
 )
