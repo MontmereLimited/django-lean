@@ -19,7 +19,7 @@ class BugViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'image/png')
         self.assertEqual(response['Cache-Control'], 'max-age=0')
-        self.assertEqual(response.content, TRANSPARENT_1X1_PNG)
+        self.assertEqual(str(response.content, encoding='utf8'), TRANSPARENT_1X1_PNG)
 
     def testPngResponse(self):
         experiment = Experiment(name="test-experiment")
