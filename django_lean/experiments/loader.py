@@ -3,7 +3,7 @@ import logging, os, sys
 l = logging.getLogger(__name__)
 
 from django.conf import settings
-from django.utils import simplejson
+import json
 
 from django_lean.experiments.models import Experiment
 
@@ -41,7 +41,7 @@ class ExperimentLoader(object):
         fp = open(filename)
         experiment_names = None
         try:
-            experiment_names = simplejson.load(fp)
+            experiment_names = json.load(fp)
         except Exception as e:
             l.error("Unable to parse experiment file %s: %s" % (filename, e))
             raise e
