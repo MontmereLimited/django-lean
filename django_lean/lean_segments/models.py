@@ -115,7 +115,7 @@ class Segment(models.Model):
     @classmethod
     def _get_segment(cls, user, date):
         if in_transaction():
-            warnings.warn('Inside a transaction: may cause performance issues.',
+            warnings.warning('Inside a transaction: may cause performance issues.',
                           RuntimeWarning, stacklevel=3)
         return cls.get_segment(user, date)
 

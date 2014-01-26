@@ -99,7 +99,7 @@ def get_conversion_data(experiment, date):
     """
     report_set = DailyConversionReport.objects.filter(experiment=experiment, date=date)
     if report_set.count() != 1:
-        l.warn("No conversion report for date %s and experiment %s" %
+        l.warning("No conversion report for date %s and experiment %s" %
                (date, experiment.name))
         return None
     

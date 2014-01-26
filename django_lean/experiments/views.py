@@ -43,7 +43,7 @@ def record_experiment_goal(request, goal_name):
     try:
         GoalRecord.record(goal_name, WebUser(request))
     except Exception as e:
-        l.warn("unknown goal type '%s': %s" % (goal_name, e))
+        l.warning("unknown goal type '%s': %s" % (goal_name, e))
     
     return HttpResponse(TRANSPARENT_1X1_PNG, mimetype="image/png")
 
@@ -122,7 +122,7 @@ def experiment_details(request, experiment_name,
                 engagement_report = DailyEngagementReport.objects.get(experiment=experiment,
                                                                   date=current_date)
             except:
-                l.warn("No engagement report for date %s and experiment %s" %
+                l.warning("No engagement report for date %s and experiment %s" %
                        (current_date, experiment.name))
             daily_conversion_data = get_conversion_data(experiment, current_date)
             
