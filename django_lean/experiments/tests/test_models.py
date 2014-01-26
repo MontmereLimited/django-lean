@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import with_statement
-from datetime import datetime
+from django.utils import timezone
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -238,12 +238,12 @@ class TestExperimentModels(TestCase):
         self.assertRaises(Exception, lambda: GoalRecord(anonymous_visitor=anonymous_visitor).save())
         self.assertRaises(Exception, lambda: GoalRecord(goal_type=goal_type).save())
         
-        now = datetime.now()
+        now = timezone.now()
         
         goal_record = GoalRecord(anonymous_visitor=anonymous_visitor, goal_type=goal_type)
         goal_record.save()
         
-        self.assertTrue(goal_record.created >= now and goal_record.created <= datetime.now())
+        self.assertTrue(goal_record.created >= now and goal_record.created <= timezone.now())
         
         # it's OK for the same user to record the same goal multiple times
         goal_record2 = GoalRecord(anonymous_visitor=anonymous_visitor, goal_type=goal_type)

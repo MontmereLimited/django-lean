@@ -71,8 +71,8 @@ class ExperimentTagsTest(TestCase):
             self.assertEqual(204, response.status_code)
             response = client.get(url)
             self.assertEqual(200, response.status_code)
-            in_test = "test" in response.content.lower()
-            in_control = "control" in response.content.lower()
+            in_test = "test" in str(response.content.lower(), encoding="utf8")
+            in_control = "control" in str(response.content.lower(), encoding="utf8")
             self.assertTrue(in_test != in_control)
             found_control = found_control or in_control
             found_test = found_test or in_test
