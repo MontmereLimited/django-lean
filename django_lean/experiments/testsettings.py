@@ -1,7 +1,7 @@
 class SimpleEngagementCalculator(object):
 
     def calculate_user_engagement_score(self, user, start_date, end_date):
-	return 0
+        return 0
 
 ROOT_URLCONF=None
 DATABASE_ENGINE='sqlite3'
