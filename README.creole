@@ -221,7 +221,7 @@ You may optionally use [[http://south.aeracode.org/|South]] in order to facilita
 
 == Installation ==
 
-{{{django-lean}}} has been developed with Django 1.0. Unit Tests run successfully with Django 1.1 but it has not been tried in production. If you successfully run it with another version, please update this documentation.
+{{{django-lean}}} Unit Tests run successfully on Django 1.6 and python 3.3. Support for < python 2.7 is hereby dropped. If you successfully run it with another version, please update this documentation.
 
 # Install {{{django-lean}}} using {{{easy_install}}}
 # Add {{{experiments}}} to {{{INSTALLED_APPS}}} in {{{settings.py}}}
