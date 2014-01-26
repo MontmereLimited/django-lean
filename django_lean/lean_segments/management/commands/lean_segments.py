@@ -81,7 +81,7 @@ class Command(LabelCommand):
 
     def log(self, message, level, options):
         if int(options.get('verbosity', 1)) >= level:
-            print message
+            print(message)
 
     def handle(self, *labels, **options):
         if len(labels) != 1:

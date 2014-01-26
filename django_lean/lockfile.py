@@ -26,7 +26,7 @@ def openlock(filename, operation, wait=True):
             raise CommandError("Could not acquire lock on '%s' held by %s." %
                                (filename, f.readline().strip()))
         raise
-    print >>f, "%s:%d" % (socket.gethostname(), os.getpid())
+    print("%s:%d" % (socket.gethostname(), os.getpid()), file=f)
     f.truncate()
     f.flush()
     return f
