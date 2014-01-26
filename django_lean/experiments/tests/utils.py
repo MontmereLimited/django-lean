@@ -6,7 +6,7 @@ from contextlib import contextmanager
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.test import TestCase as DjangoTestCase
+from django.test import TransactionTestCase as DjangoTestCase
 from django.utils.importlib import import_module
 from django.utils.functional import LazyObject
 
