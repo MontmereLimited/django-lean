@@ -38,12 +38,13 @@ class TestCase(DjangoTestCase):
         super(TestCase, self)._pre_setup()
         experiments = getattr(self, 'experiments', [])
         ExperimentLoader.load_all_experiments(apps=experiments)
-        self.original_LEAN_ANALYTICS = settings.LEAN_ANALYTICS
+        self.original_LEAN_ANALYTICS = getattr(settings, 'LEAN_ANALYTICS', [])
         settings.LEAN_ANALYTICS = []
         reset_caches()
 
     def _post_teardown(self):
-        settings.LEAN_ANALYTICS = self.original_LEAN_ANALYTICS
+        if hasattr(settings, 'LEAN_ANALYTICS'):
+            settings.LEAN_ANALYTICS = self.original_LEAN_ANALYTICS
         super(TestCase, self)._post_teardown()
 
 
