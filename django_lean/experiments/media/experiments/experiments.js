@@ -4,7 +4,6 @@
  *       experiments.control("experiments_name");
  *   and
  *       experiments.test("experiments_name");
- *   Relies on JQuery
 **/
 experiments = function() {
     // experiment_enrollment should have the following format { experiment_name : group }
@@ -35,7 +34,26 @@ experiments = function() {
             }
         },
         confirm_human: function() {
-            $.get("/experiments/confirm_human/");
+            /**
+             * Old browser support
+             */
+            if (typeof XMLHttpRequest == "undefined") {
+                XMLHttpRequest = function () {
+                    try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); }
+                        catch (e) {}
+                    try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); }
+                        catch (e) {}
+                    try { return new ActiveXObject("Msxml2.XMLHTTP"); }
+                        catch (e) {}
+                    throw new Error("This browser does not support XMLHttpRequest.");
+                };
+            }
+            /**
+             * End old browser support
+             */
+            request = new XMLHttpRequest
+            request.open('GET', '/experiments/confirm_human/', true)
+            request.send()
         }
     };
 }();
