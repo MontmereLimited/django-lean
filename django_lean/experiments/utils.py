@@ -51,6 +51,7 @@ class WebUser(object):
             return
 
         anonymous_visitor = self.get_or_create_anonymous_visitor()
+        experiments_to_delete = []
         for experiment_name, group_id in enrollments.items():
             try:
                 experiment = Experiment.objects.get(name=experiment_name)
@@ -62,6 +63,8 @@ class WebUser(object):
                                            group=group_id)
             except:
                 pass
+            experiments_to_delete.append(experiment_name)
+        for exid, experiment_name in enumerate(experiments_to_delete):
             del self.session['temporary_enrollments'][experiment_name]
 
     def store_temporary_enrollment(self, experiment_name, group_id):
