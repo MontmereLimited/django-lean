@@ -13,3 +13,4 @@ eggs/*
 dist/*
 env/*
 *.egg-info
+*.swp
