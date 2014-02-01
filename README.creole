@@ -223,7 +223,7 @@ You may optionally use [[http://south.aeracode.org/|South]] in order to facilita
 {{{django-lean}}} Unit Tests run successfully on Django 1.6 and python 3.3. Support for < python 2.7 is hereby dropped. If you successfully run it with another version, please update this documentation.
 
 # Install {{{django-lean}}} using {{{easy_install}}}
-# Add {{{experiments}}} to {{{INSTALLED_APPS}}} in {{{settings.py}}}
+# Add {{{django_lean}}} and {{{django_lean.experiments}}} to {{{INSTALLED_APPS}}} in {{{settings.py}}}
 # Ensure that {{{django.core.context_processors.request}}} is in {{{TEMPLATE_CONTEXT_PROCESSORS}}} in {{{settings.py}}}
 # Run {{{manage.py syncdb}}} to set up the {{{django-lean}}} tables.
 # Run {{{manage.py test experiments}}} to see if everything is set up correctly.
