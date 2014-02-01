@@ -247,7 +247,7 @@ The following snippet added to {{urls.py}} should properly install the needed UR
 ...
 urlpatterns += patterns('',
     url(r'^admin/django-lean/', include('experiments.admin_urls')),
-    url(r'^django-lean/', include('experiments.urls')),
+    url(r'^experiments/', include('experiments.urls')),
 )
 ...
 }}}
