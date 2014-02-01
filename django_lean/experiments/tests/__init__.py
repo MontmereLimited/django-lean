@@ -16,6 +16,6 @@ for filename in os.listdir(os.path.dirname(__file__)):
         module = __import__('.'.join((__name__, filename[:-3])), (), (), ["*"])
         for name in dir(module):
             function = getattr(module, name)
-            if (type(function) is TypeType and
+            if (isinstance(function, TypeType) and
                 issubclass(function, unittest.TestCase)):
                 globals()[name] = function
