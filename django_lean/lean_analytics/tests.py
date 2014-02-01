@@ -187,7 +187,7 @@ else:
 ##########
 
 try:
-    import mixpanel
+    from . import mixpanel
 except ImportError:
     if 'django_lean.lean_analytics.mixpanel.Mixpanel' in \
        get_all_analytics_names():
