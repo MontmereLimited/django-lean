@@ -213,9 +213,8 @@ LEAN_ENGAGEMENT_CALCULATOR = "mycompany.MyEngagementScoreCalculator"
 
 * [[http://code.google.com/p/pymox/|Mox]]
 * [[http://www.crummy.com/software/BeautifulSoup/|Beautiful Soup]]
-* [[http://jquery.com/|JQuery]]
 
-Mox and Beautiful Soup are used exclusively by unit tests. JQuery is used only to execute a single, trivial AJAX request and could easily be removed from the dependency list if one were motivated (patch please!).
+Mox and Beautiful Soup are used exclusively by unit tests.
 
 You may optionally use [[http://south.aeracode.org/|South]] in order to facilitate migrations of the {{{django-lean}}} database schema, but it is not required:
 
@@ -229,7 +228,6 @@ You may optionally use [[http://south.aeracode.org/|South]] in order to facilita
 # Run {{{manage.py syncdb}}} to set up the {{{django-lean}}} tables.
 # Run {{{manage.py test experiments}}} to see if everything is set up correctly.
 # For every page that will contain an experiment (or in the response after a server-side experiment):
-## Ensure that JQuery is included.
 ## Ensure that {{{experiments/include/experiments.js}}} is somehow included (perhaps copy it where your static files go, include it as part of your existing generated JS files, map it from {{{urls.py}}}, include it directly in a {{{<script/>}}} tag, etc.).
 ## Ensure that {{{experiments/include/experiment_enrollment.html}}} is rendered by your template.
 # Install the admin and public url mappings in your site {{{urls.py}}}
